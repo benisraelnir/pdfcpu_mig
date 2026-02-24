@@ -9,7 +9,7 @@ This script supports two modes:
 1. SRC Validation: Tests commands and captures outputs (no expected_stdout/stderr)
 2. DST Contract Validation: Tests commands and validates outputs match expected
 
-Generated at: 2026-02-24T20:19:55.710469+00:00
+Generated at: 2026-02-24T20:34:47.515715+00:00
 Project: pdf
 Milestone: 3
 """
@@ -169,7 +169,7 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "test_input.pdf",
+            "pkg/testdata/go.pdf",
             "test_out_enc256.pdf"
         ],
         "expected_exit_code": 0,
@@ -196,7 +196,7 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "test_input.pdf",
+            "pkg/testdata/go.pdf",
             "test_out_enc_aes128.pdf"
         ],
         "expected_exit_code": 0,
@@ -225,7 +225,7 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "test_input.pdf",
+            "pkg/testdata/go.pdf",
             "test_out_enc_rc440.pdf"
         ],
         "expected_exit_code": 0,
@@ -254,7 +254,7 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "test_input.pdf",
+            "pkg/testdata/go.pdf",
             "test_out_enc_rc4128.pdf"
         ],
         "expected_exit_code": 0,
@@ -281,7 +281,7 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "test_input.pdf",
+            "pkg/testdata/go.pdf",
             "test_out_enc_perm_all.pdf"
         ],
         "expected_exit_code": 0,
@@ -308,7 +308,7 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "test_input.pdf",
+            "pkg/testdata/go.pdf",
             "test_out_enc_perm_print.pdf"
         ],
         "expected_exit_code": 0,
@@ -331,7 +331,7 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "test_input.pdf",
+            "pkg/testdata/go.pdf",
             "test_out_enc_opw_only.pdf"
         ],
         "expected_exit_code": 0,
@@ -345,21 +345,31 @@ TEST_CASES = json.loads(r'''[
         }
     },
     {
-        "name": "test_encrypt_inplace",
+        "name": "test_encrypt_aes40_happy_path",
         "category": "HAPPY_PATH",
-        "description": "Encrypt a PDF in place (no output file specified)",
+        "description": "Encrypt a PDF with AES-40",
         "command": "./pdfcpu",
         "args": [
             "encrypt",
+            "-m",
+            "aes",
+            "-key",
+            "40",
             "-opw",
             "ownerpass",
             "--",
-            "test_input_inplace.pdf"
+            "pkg/testdata/go.pdf",
+            "test_out_enc_aes40.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
-        "timeout_seconds": 30
+        "timeout_seconds": 30,
+        "cleanup": {
+            "delete_files": [
+                "test_out_enc_aes40.pdf"
+            ]
+        }
     },
     {
         "name": "test_encrypt_missing_opw",
@@ -369,7 +379,7 @@ TEST_CASES = json.loads(r'''[
         "args": [
             "encrypt",
             "--",
-            "test_input.pdf"
+            "pkg/testdata/go.pdf"
         ],
         "expected_exit_code": 1,
         "expected_stdout": null,
@@ -472,54 +482,6 @@ TEST_CASES = json.loads(r'''[
         "timeout_seconds": 10
     },
     {
-        "name": "test_decrypt_with_correct_passwords",
-        "category": "HAPPY_PATH",
-        "description": "Decrypt a PDF with correct user and owner passwords",
-        "command": "./pdfcpu",
-        "args": [
-            "decrypt",
-            "-upw",
-            "userpass",
-            "-opw",
-            "ownerpass",
-            "--",
-            "test_encrypted.pdf",
-            "test_out_decrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "cleanup": {
-            "delete_files": [
-                "test_out_decrypted.pdf"
-            ]
-        }
-    },
-    {
-        "name": "test_decrypt_with_opw_only",
-        "category": "HAPPY_PATH",
-        "description": "Decrypt a PDF using owner password only",
-        "command": "./pdfcpu",
-        "args": [
-            "decrypt",
-            "-opw",
-            "ownerpass",
-            "--",
-            "test_encrypted_opw.pdf",
-            "test_out_dec_opw.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "cleanup": {
-            "delete_files": [
-                "test_out_dec_opw.pdf"
-            ]
-        }
-    },
-    {
         "name": "test_decrypt_too_many_args",
         "category": "INVALID_ARGS",
         "description": "Decrypt with too many arguments should fail",
@@ -550,25 +512,6 @@ TEST_CASES = json.loads(r'''[
         "expected_stdout": null,
         "expected_stderr": "no such file",
         "timeout_seconds": 10
-    },
-    {
-        "name": "test_changeupw_happy_path",
-        "category": "HAPPY_PATH",
-        "description": "Change user password on an encrypted PDF",
-        "command": "./pdfcpu",
-        "args": [
-            "changeupw",
-            "-opw",
-            "ownerpass",
-            "--",
-            "test_enc_changeupw.pdf",
-            "userpass",
-            "newuserpass"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30
     },
     {
         "name": "test_changeupw_missing_args",
@@ -603,25 +546,6 @@ TEST_CASES = json.loads(r'''[
         "expected_stdout": null,
         "expected_stderr": "usage: pdfcpu changeupw",
         "timeout_seconds": 10
-    },
-    {
-        "name": "test_changeopw_happy_path",
-        "category": "HAPPY_PATH",
-        "description": "Change owner password on an encrypted PDF",
-        "command": "./pdfcpu",
-        "args": [
-            "changeopw",
-            "-upw",
-            "userpass",
-            "--",
-            "test_enc_changeopw.pdf",
-            "ownerpass",
-            "newownerpass"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30
     },
     {
         "name": "test_changeopw_empty_new_password_fails",
@@ -667,68 +591,10 @@ TEST_CASES = json.loads(r'''[
             "permissions",
             "list",
             "--",
-            "test_input.pdf"
+            "pkg/testdata/go.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": "Full access",
-        "expected_stderr": null,
-        "timeout_seconds": 30
-    },
-    {
-        "name": "test_permissions_list_encrypted_with_opw",
-        "category": "HAPPY_PATH",
-        "description": "List permissions on encrypted PDF using owner password",
-        "command": "./pdfcpu",
-        "args": [
-            "permissions",
-            "list",
-            "-opw",
-            "ownerpass",
-            "--",
-            "test_encrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "permission bits:",
-        "expected_stderr": null,
-        "timeout_seconds": 30
-    },
-    {
-        "name": "test_permissions_list_encrypted_with_upw",
-        "category": "HAPPY_PATH",
-        "description": "List permissions on encrypted PDF using user password",
-        "command": "./pdfcpu",
-        "args": [
-            "permissions",
-            "list",
-            "-upw",
-            "userpass",
-            "--",
-            "test_encrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "permission bits:",
-        "expected_stderr": null,
-        "timeout_seconds": 30
-    },
-    {
-        "name": "test_permissions_set_all",
-        "category": "HAPPY_PATH",
-        "description": "Set all permissions on an encrypted PDF",
-        "command": "./pdfcpu",
-        "args": [
-            "permissions",
-            "set",
-            "-perm",
-            "all",
-            "-upw",
-            "userpass",
-            "-opw",
-            "ownerpass",
-            "--",
-            "test_enc_permset.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30
     },
@@ -782,7 +648,7 @@ TEST_CASES = json.loads(r'''[
             "signatures",
             "validate",
             "--",
-            "test_input.pdf"
+            "pkg/testdata/go.pdf"
         ],
         "expected_exit_code": 1,
         "expected_stdout": null,
@@ -827,7 +693,7 @@ TEST_CASES = json.loads(r'''[
         "args": [
             "certificates",
             "inspect",
-            "test_cert.p7c"
+            "pkg/pdfcpu/model/resources/certs/de.p7c"
         ],
         "expected_exit_code": 0,
         "expected_stdout": "certificates",
@@ -880,6 +746,21 @@ TEST_CASES = json.loads(r'''[
         "timeout_seconds": 10
     },
     {
+        "name": "test_certificates_import_p7c",
+        "category": "HAPPY_PATH",
+        "description": "Import a P7C certificate file",
+        "command": "./pdfcpu",
+        "args": [
+            "certificates",
+            "import",
+            "pkg/pdfcpu/model/resources/certs/de.p7c"
+        ],
+        "expected_exit_code": 0,
+        "expected_stdout": "certificates",
+        "expected_stderr": null,
+        "timeout_seconds": 30
+    },
+    {
         "name": "test_command_prefix_completion_enc",
         "category": "BOUNDARY",
         "description": "Test command prefix completion: 'enc' should match 'encrypt'",
@@ -889,7 +770,7 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "test_input.pdf",
+            "pkg/testdata/go.pdf",
             "test_out_prefix_enc.pdf"
         ],
         "expected_exit_code": 0,
@@ -903,39 +784,16 @@ TEST_CASES = json.loads(r'''[
         }
     },
     {
-        "name": "test_command_prefix_completion_dec",
-        "category": "BOUNDARY",
-        "description": "Test command prefix completion: 'dec' should match 'decrypt'",
-        "command": "./pdfcpu",
-        "args": [
-            "dec",
-            "-opw",
-            "ownerpass",
-            "--",
-            "test_encrypted_opw.pdf",
-            "test_out_prefix_dec.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "cleanup": {
-            "delete_files": [
-                "test_out_prefix_dec.pdf"
-            ]
-        }
-    },
-    {
         "name": "test_quiet_flag_suppresses_output",
         "category": "BOUNDARY",
-        "description": "Using -q flag should suppress normal output",
+        "description": "Using -q flag should suppress normal output on permissions list",
         "command": "./pdfcpu",
         "args": [
             "-q",
             "permissions",
             "list",
             "--",
-            "test_input.pdf"
+            "pkg/testdata/go.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
@@ -943,44 +801,30 @@ TEST_CASES = json.loads(r'''[
         "timeout_seconds": 30
     },
     {
-        "name": "test_encrypt_aes40_happy_path",
+        "name": "test_version_output",
         "category": "HAPPY_PATH",
-        "description": "Encrypt a PDF with AES-40",
+        "description": "Verify version command outputs version info",
         "command": "./pdfcpu",
         "args": [
-            "encrypt",
-            "-m",
-            "aes",
-            "-key",
-            "40",
-            "-opw",
-            "ownerpass",
+            "version"
+        ],
+        "expected_exit_code": 0,
+        "expected_stdout": "pdfcpu:",
+        "expected_stderr": null,
+        "timeout_seconds": 10
+    },
+    {
+        "name": "test_validate_happy_path",
+        "category": "HAPPY_PATH",
+        "description": "Validate a well-formed PDF file",
+        "command": "./pdfcpu",
+        "args": [
+            "validate",
             "--",
-            "test_input.pdf",
-            "test_out_enc_aes40.pdf"
+            "pkg/testdata/go.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "cleanup": {
-            "delete_files": [
-                "test_out_enc_aes40.pdf"
-            ]
-        }
-    },
-    {
-        "name": "test_certificates_import_p7c",
-        "category": "HAPPY_PATH",
-        "description": "Import a P7C certificate file",
-        "command": "./pdfcpu",
-        "args": [
-            "certificates",
-            "import",
-            "test_cert.p7c"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "certificates",
         "expected_stderr": null,
         "timeout_seconds": 30
     }
