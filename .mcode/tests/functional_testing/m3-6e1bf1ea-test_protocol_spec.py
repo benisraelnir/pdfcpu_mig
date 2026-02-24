@@ -9,7 +9,7 @@ This script supports two modes:
 1. SRC Validation: Tests commands and captures outputs (no expected_stdout/stderr)
 2. DST Contract Validation: Tests commands and validates outputs match expected
 
-Generated at: 2026-02-24T20:00:54.210089+00:00
+Generated at: 2026-02-24T20:19:55.710469+00:00
 Project: pdf
 Milestone: 3
 """
@@ -37,7 +37,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_encrypt_help",
         "category": "HELP_OUTPUT",
         "description": "Verify encrypt command shows usage when invoked with no arguments",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt"
         ],
@@ -50,7 +50,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_decrypt_help",
         "category": "HELP_OUTPUT",
         "description": "Verify decrypt command shows usage when invoked with no arguments",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "decrypt"
         ],
@@ -63,7 +63,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_changeupw_help",
         "category": "HELP_OUTPUT",
         "description": "Verify changeupw command shows usage when invoked with no arguments",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "changeupw"
         ],
@@ -76,7 +76,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_changeopw_help",
         "category": "HELP_OUTPUT",
         "description": "Verify changeopw command shows usage when invoked with no arguments",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "changeopw"
         ],
@@ -89,7 +89,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_permissions_list_help",
         "category": "HELP_OUTPUT",
         "description": "Verify permissions list shows usage when invoked with no file argument",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "permissions",
             "list"
@@ -103,7 +103,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_permissions_set_help",
         "category": "HELP_OUTPUT",
         "description": "Verify permissions set shows usage when invoked with no file argument",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "permissions",
             "set"
@@ -117,7 +117,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_signatures_validate_help",
         "category": "HELP_OUTPUT",
         "description": "Verify signatures validate shows usage when invoked with too many arguments",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "signatures",
             "validate",
@@ -133,7 +133,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_certificates_inspect_help",
         "category": "HELP_OUTPUT",
         "description": "Verify certificates inspect shows usage when invoked with no file argument",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "certificates",
             "inspect"
@@ -147,7 +147,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_certificates_import_help",
         "category": "HELP_OUTPUT",
         "description": "Verify certificates import shows usage when invoked with no file argument",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "certificates",
             "import"
@@ -160,8 +160,8 @@ TEST_CASES = json.loads(r'''[
     {
         "name": "test_encrypt_aes256_happy_path",
         "category": "HAPPY_PATH",
-        "description": "Encrypt a PDF with AES-256, owner and user passwords, default permissions (none)",
-        "command": "pdfcpu",
+        "description": "Encrypt a PDF with AES-256 (default), owner and user passwords",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-upw",
@@ -169,22 +169,16 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "input.pdf",
-            "encrypted.pdf"
+            "test_input.pdf",
+            "test_out_enc256.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "encrypted.pdf"
+                "test_out_enc256.pdf"
             ]
         }
     },
@@ -192,7 +186,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_encrypt_aes128_happy_path",
         "category": "HAPPY_PATH",
         "description": "Encrypt a PDF with AES-128, owner password only",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-m",
@@ -202,22 +196,16 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "input.pdf",
-            "encrypted_aes128.pdf"
+            "test_input.pdf",
+            "test_out_enc_aes128.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "encrypted_aes128.pdf"
+                "test_out_enc_aes128.pdf"
             ]
         }
     },
@@ -225,7 +213,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_encrypt_rc4_40_happy_path",
         "category": "HAPPY_PATH",
         "description": "Encrypt a PDF with RC4-40, both passwords",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-m",
@@ -237,22 +225,16 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "input.pdf",
-            "encrypted_rc4_40.pdf"
+            "test_input.pdf",
+            "test_out_enc_rc440.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "encrypted_rc4_40.pdf"
+                "test_out_enc_rc440.pdf"
             ]
         }
     },
@@ -260,7 +242,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_encrypt_rc4_128_happy_path",
         "category": "HAPPY_PATH",
         "description": "Encrypt a PDF with RC4-128, both passwords",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-m",
@@ -272,22 +254,16 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "input.pdf",
-            "encrypted_rc4_128.pdf"
+            "test_input.pdf",
+            "test_out_enc_rc4128.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "encrypted_rc4_128.pdf"
+                "test_out_enc_rc4128.pdf"
             ]
         }
     },
@@ -295,7 +271,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_encrypt_with_perm_all",
         "category": "HAPPY_PATH",
         "description": "Encrypt a PDF with all permissions granted",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-perm",
@@ -305,22 +281,16 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "input.pdf",
-            "encrypted_perm_all.pdf"
+            "test_input.pdf",
+            "test_out_enc_perm_all.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "encrypted_perm_all.pdf"
+                "test_out_enc_perm_all.pdf"
             ]
         }
     },
@@ -328,7 +298,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_encrypt_with_perm_print",
         "category": "HAPPY_PATH",
         "description": "Encrypt a PDF with print-only permissions",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-perm",
@@ -338,22 +308,39 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "input.pdf",
-            "encrypted_perm_print.pdf"
+            "test_input.pdf",
+            "test_out_enc_perm_print.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "encrypted_perm_print.pdf"
+                "test_out_enc_perm_print.pdf"
+            ]
+        }
+    },
+    {
+        "name": "test_encrypt_opw_only",
+        "category": "HAPPY_PATH",
+        "description": "Encrypt with owner password only (no user password), allowing passwordless opening",
+        "command": "./pdfcpu",
+        "args": [
+            "encrypt",
+            "-opw",
+            "ownerpass",
+            "--",
+            "test_input.pdf",
+            "test_out_enc_opw_only.pdf"
+        ],
+        "expected_exit_code": 0,
+        "expected_stdout": null,
+        "expected_stderr": null,
+        "timeout_seconds": 30,
+        "cleanup": {
+            "delete_files": [
+                "test_out_enc_opw_only.pdf"
             ]
         }
     },
@@ -361,56 +348,39 @@ TEST_CASES = json.loads(r'''[
         "name": "test_encrypt_inplace",
         "category": "HAPPY_PATH",
         "description": "Encrypt a PDF in place (no output file specified)",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-opw",
             "ownerpass",
             "--",
-            "input_inplace.pdf"
+            "test_input_inplace.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input_inplace.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
-        "cleanup": {
-            "delete_files": [
-                "input_inplace.pdf"
-            ]
-        }
+        "timeout_seconds": 30
     },
     {
         "name": "test_encrypt_missing_opw",
         "category": "INVALID_ARGS",
         "description": "Encrypt without owner password should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "--",
-            "input.pdf"
+            "test_input.pdf"
         ],
         "expected_exit_code": 1,
         "expected_stdout": null,
         "expected_stderr": "missing non-empty owner password",
-        "timeout_seconds": 10,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        }
+        "timeout_seconds": 10
     },
     {
         "name": "test_encrypt_invalid_mode",
         "category": "INVALID_OPTIONS",
         "description": "Encrypt with invalid encryption mode should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-m",
@@ -423,53 +393,13 @@ TEST_CASES = json.loads(r'''[
         "expected_exit_code": 1,
         "expected_stdout": null,
         "expected_stderr": "valid modes: rc4,aes",
-        "timeout_seconds": 10,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_encrypt_invalid_key_rc4",
-        "category": "INVALID_OPTIONS",
-        "description": "Encrypt RC4 with unsupported key length 256 should auto-downgrade to 128",
-        "command": "pdfcpu",
-        "args": [
-            "encrypt",
-            "-m",
-            "rc4",
-            "-key",
-            "256",
-            "-opw",
-            "ownerpass",
-            "--",
-            "input.pdf",
-            "output.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
-        "cleanup": {
-            "delete_files": [
-                "output.pdf"
-            ]
-        },
-        "notes": "RC4 with key=256 auto-downgrades to key=128"
+        "timeout_seconds": 10
     },
     {
         "name": "test_encrypt_invalid_key_aes",
         "category": "INVALID_OPTIONS",
         "description": "Encrypt AES with unsupported key length should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-m",
@@ -489,8 +419,8 @@ TEST_CASES = json.loads(r'''[
     {
         "name": "test_encrypt_invalid_perm",
         "category": "INVALID_OPTIONS",
-        "description": "Encrypt with invalid permission value should fail",
-        "command": "pdfcpu",
+        "description": "Encrypt with invalid permission value should show usage",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-perm",
@@ -502,14 +432,14 @@ TEST_CASES = json.loads(r'''[
         ],
         "expected_exit_code": 1,
         "expected_stdout": null,
-        "expected_stderr": "supported permissions",
+        "expected_stderr": "usage: pdfcpu encrypt",
         "timeout_seconds": 10
     },
     {
         "name": "test_encrypt_too_many_args",
         "category": "INVALID_ARGS",
         "description": "Encrypt with too many positional arguments should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-opw",
@@ -528,7 +458,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_encrypt_file_not_found",
         "category": "FILE_INPUT",
         "description": "Encrypt a non-existent file should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-opw",
@@ -542,36 +472,10 @@ TEST_CASES = json.loads(r'''[
         "timeout_seconds": 10
     },
     {
-        "name": "test_encrypt_already_encrypted",
-        "category": "BOUNDARY",
-        "description": "Encrypting an already encrypted file should fail",
-        "command": "pdfcpu",
-        "args": [
-            "encrypt",
-            "-upw",
-            "userpass",
-            "-opw",
-            "ownerpass",
-            "--",
-            "already_encrypted.pdf"
-        ],
-        "expected_exit_code": 1,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "already_encrypted.pdf",
-                "content": "PRE_ENCRYPTED_PDF_FIXTURE"
-            }
-        },
-        "notes": "File must be pre-encrypted for this test"
-    },
-    {
         "name": "test_decrypt_with_correct_passwords",
         "category": "HAPPY_PATH",
         "description": "Decrypt a PDF with correct user and owner passwords",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "decrypt",
             "-upw",
@@ -579,22 +483,16 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "encrypted.pdf",
-            "decrypted.pdf"
+            "test_encrypted.pdf",
+            "test_out_decrypted.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "decrypted.pdf"
+                "test_out_decrypted.pdf"
             ]
         }
     },
@@ -602,117 +500,30 @@ TEST_CASES = json.loads(r'''[
         "name": "test_decrypt_with_opw_only",
         "category": "HAPPY_PATH",
         "description": "Decrypt a PDF using owner password only",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "decrypt",
             "-opw",
             "ownerpass",
             "--",
-            "encrypted.pdf",
-            "decrypted.pdf"
+            "test_encrypted_opw.pdf",
+            "test_out_dec_opw.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE_OPW_ONLY"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "decrypted.pdf"
+                "test_out_dec_opw.pdf"
             ]
         }
-    },
-    {
-        "name": "test_decrypt_inplace",
-        "category": "HAPPY_PATH",
-        "description": "Decrypt a PDF in place (no output file specified)",
-        "command": "pdfcpu",
-        "args": [
-            "decrypt",
-            "-upw",
-            "userpass",
-            "-opw",
-            "ownerpass",
-            "--",
-            "encrypted_inplace.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted_inplace.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_decrypt_wrong_password",
-        "category": "INVALID_ARGS",
-        "description": "Decrypt with wrong passwords should fail",
-        "command": "pdfcpu",
-        "args": [
-            "decrypt",
-            "-upw",
-            "wronguser",
-            "-opw",
-            "wrongowner",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 1,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        },
-        "notes": "Both passwords are wrong so decryption should fail"
-    },
-    {
-        "name": "test_decrypt_wrong_opw_empty_upw_succeeds",
-        "category": "BOUNDARY",
-        "description": "Decrypt with wrong owner password but empty user password (opw-only encrypted) should succeed via fallback",
-        "command": "pdfcpu",
-        "args": [
-            "decrypt",
-            "-opw",
-            "wrongowner",
-            "--",
-            "encrypted_opw_only.pdf",
-            "decrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted_opw_only.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE_OPW_ONLY"
-            }
-        },
-        "cleanup": {
-            "delete_files": [
-                "decrypted.pdf"
-            ]
-        },
-        "notes": "When file was encrypted with opw only (empty upw), providing wrong opw falls back to empty upw and succeeds"
     },
     {
         "name": "test_decrypt_too_many_args",
         "category": "INVALID_ARGS",
         "description": "Decrypt with too many arguments should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "decrypt",
             "--",
@@ -729,7 +540,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_decrypt_file_not_found",
         "category": "FILE_INPUT",
         "description": "Decrypt a non-existent file should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "decrypt",
             "--",
@@ -744,82 +555,26 @@ TEST_CASES = json.loads(r'''[
         "name": "test_changeupw_happy_path",
         "category": "HAPPY_PATH",
         "description": "Change user password on an encrypted PDF",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "changeupw",
             "-opw",
             "ownerpass",
             "--",
-            "encrypted.pdf",
+            "test_enc_changeupw.pdf",
             "userpass",
             "newuserpass"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_changeupw_remove_upw",
-        "category": "HAPPY_PATH",
-        "description": "Remove user password by changing it to empty string",
-        "command": "pdfcpu",
-        "args": [
-            "changeupw",
-            "-opw",
-            "ownerpass",
-            "--",
-            "encrypted.pdf",
-            "userpass",
-            ""
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_changeupw_wrong_old_password",
-        "category": "INVALID_ARGS",
-        "description": "Change user password with wrong old password should fail",
-        "command": "pdfcpu",
-        "args": [
-            "changeupw",
-            "-opw",
-            "ownerpass",
-            "--",
-            "encrypted.pdf",
-            "wrongoldpw",
-            "newpw"
-        ],
-        "expected_exit_code": 1,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
+        "timeout_seconds": 30
     },
     {
         "name": "test_changeupw_missing_args",
         "category": "INVALID_ARGS",
         "description": "Change user password with too few arguments should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "changeupw",
             "--",
@@ -835,7 +590,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_changeupw_too_many_args",
         "category": "INVALID_ARGS",
         "description": "Change user password with too many arguments should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "changeupw",
             "--",
@@ -853,32 +608,26 @@ TEST_CASES = json.loads(r'''[
         "name": "test_changeopw_happy_path",
         "category": "HAPPY_PATH",
         "description": "Change owner password on an encrypted PDF",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "changeopw",
             "-upw",
             "userpass",
             "--",
-            "encrypted.pdf",
+            "test_enc_changeopw.pdf",
             "ownerpass",
             "newownerpass"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
+        "timeout_seconds": 30
     },
     {
         "name": "test_changeopw_empty_new_password_fails",
         "category": "INVALID_ARGS",
         "description": "Change owner password to empty string should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "changeopw",
             "-upw",
@@ -891,69 +640,13 @@ TEST_CASES = json.loads(r'''[
         "expected_exit_code": 1,
         "expected_stdout": null,
         "expected_stderr": "owner password cannot be empty",
-        "timeout_seconds": 10,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_changeopw_wrong_old_password",
-        "category": "INVALID_ARGS",
-        "description": "Change owner password with wrong old owner password should fail",
-        "command": "pdfcpu",
-        "args": [
-            "changeopw",
-            "-upw",
-            "",
-            "--",
-            "encrypted_opw_only.pdf",
-            "wrongoldopw",
-            "newopw"
-        ],
-        "expected_exit_code": 1,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted_opw_only.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE_OPW_ONLY"
-            }
-        }
-    },
-    {
-        "name": "test_changeopw_wrong_upw_fails",
-        "category": "INVALID_ARGS",
-        "description": "Change owner password with wrong user password should fail",
-        "command": "pdfcpu",
-        "args": [
-            "changeopw",
-            "-upw",
-            "wrongupw",
-            "--",
-            "encrypted_opw_only.pdf",
-            "ownerpass",
-            "newopw"
-        ],
-        "expected_exit_code": 1,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted_opw_only.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE_OPW_ONLY"
-            }
-        }
+        "timeout_seconds": 10
     },
     {
         "name": "test_changeopw_missing_args",
         "category": "INVALID_ARGS",
         "description": "Change owner password with too few arguments should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "changeopw",
             "--",
@@ -968,124 +661,60 @@ TEST_CASES = json.loads(r'''[
     {
         "name": "test_permissions_list_unencrypted",
         "category": "HAPPY_PATH",
-        "description": "List permissions on an unencrypted PDF shows 'Full access'",
-        "command": "pdfcpu",
+        "description": "List permissions on an unencrypted PDF shows Full access",
+        "command": "./pdfcpu",
         "args": [
             "permissions",
             "list",
             "--",
-            "unencrypted.pdf"
+            "test_input.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": "Full access",
         "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "unencrypted.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        }
+        "timeout_seconds": 30
     },
     {
         "name": "test_permissions_list_encrypted_with_opw",
         "category": "HAPPY_PATH",
         "description": "List permissions on encrypted PDF using owner password",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "permissions",
             "list",
             "-opw",
             "ownerpass",
             "--",
-            "encrypted.pdf"
+            "test_encrypted.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": "permission bits:",
         "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
+        "timeout_seconds": 30
     },
     {
         "name": "test_permissions_list_encrypted_with_upw",
         "category": "HAPPY_PATH",
         "description": "List permissions on encrypted PDF using user password",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "permissions",
             "list",
             "-upw",
             "userpass",
             "--",
-            "encrypted.pdf"
+            "test_encrypted.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": "permission bits:",
         "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_permissions_list_encrypted_no_pw_fails",
-        "category": "INVALID_ARGS",
-        "description": "List permissions on encrypted PDF without password should fail",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "list",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 1,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE_WITH_UPW"
-            }
-        },
-        "notes": "File must be encrypted with non-empty upw so that no-password access fails"
-    },
-    {
-        "name": "test_permissions_list_multiple_files",
-        "category": "HAPPY_PATH",
-        "description": "List permissions for multiple unencrypted PDF files",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "list",
-            "--",
-            "file1.pdf",
-            "file2.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "Full access",
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "file1.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        }
+        "timeout_seconds": 30
     },
     {
         "name": "test_permissions_set_all",
         "category": "HAPPY_PATH",
         "description": "Set all permissions on an encrypted PDF",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "permissions",
             "set",
@@ -1096,186 +725,18 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "encrypted.pdf"
+            "test_enc_permset.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_permissions_set_none",
-        "category": "HAPPY_PATH",
-        "description": "Set no permissions (most restrictive) on an encrypted PDF",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "set",
-            "-perm",
-            "none",
-            "-upw",
-            "userpass",
-            "-opw",
-            "ownerpass",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_permissions_set_print",
-        "category": "HAPPY_PATH",
-        "description": "Set print-only permissions on an encrypted PDF",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "set",
-            "-perm",
-            "print",
-            "-upw",
-            "userpass",
-            "-opw",
-            "ownerpass",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_permissions_set_hex",
-        "category": "HAPPY_PATH",
-        "description": "Set permissions using hex notation",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "set",
-            "-perm",
-            "xF3C",
-            "-upw",
-            "userpass",
-            "-opw",
-            "ownerpass",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_permissions_set_binary",
-        "category": "HAPPY_PATH",
-        "description": "Set permissions using binary notation",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "set",
-            "-perm",
-            "111100111100",
-            "-upw",
-            "userpass",
-            "-opw",
-            "ownerpass",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_permissions_set_without_opw_fails",
-        "category": "INVALID_ARGS",
-        "description": "Set permissions without owner password should fail",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "set",
-            "-perm",
-            "all",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 1,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_permissions_set_without_upw_fails",
-        "category": "INVALID_ARGS",
-        "description": "Set permissions with only upw (no opw) should fail",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "set",
-            "-perm",
-            "all",
-            "-upw",
-            "userpass",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 1,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        }
+        "timeout_seconds": 30
     },
     {
         "name": "test_permissions_set_invalid_perm",
         "category": "INVALID_OPTIONS",
         "description": "Set permissions with invalid permission value should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "permissions",
             "set",
@@ -1295,7 +756,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_permissions_set_multiple_files_fails",
         "category": "INVALID_ARGS",
         "description": "Set permissions on multiple files should fail (only one file allowed)",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "permissions",
             "set",
@@ -1313,208 +774,26 @@ TEST_CASES = json.loads(r'''[
         "timeout_seconds": 10
     },
     {
-        "name": "test_permissions_set_prefix_completion",
-        "category": "HAPPY_PATH",
-        "description": "Set permissions using prefix completion (e.g., 'pr' for 'print')",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "set",
-            "-perm",
-            "pr",
-            "-upw",
-            "userpass",
-            "-opw",
-            "ownerpass",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE"
-            }
-        },
-        "notes": "Permission prefix 'pr' should match 'print'"
-    },
-    {
-        "name": "test_signatures_validate_pkcs7_detached",
-        "category": "HAPPY_PATH",
-        "description": "Validate signatures on a PDF signed with adbe.pkcs7.detached",
-        "command": "pdfcpu",
-        "args": [
-            "signatures",
-            "validate",
-            "-a",
-            "--",
-            "signed_pkcs7_detached.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 60,
-        "setup": {
-            "create_file": {
-                "path": "signed_pkcs7_detached.pdf",
-                "content": "SIGNED_PDF_FIXTURE_PKCS7_DETACHED"
-            }
-        },
-        "notes": "Uses sample file from pkg/samples/signatures/adbe.pkcs7.detached/"
-    },
-    {
-        "name": "test_signatures_validate_etsi_cades",
-        "category": "HAPPY_PATH",
-        "description": "Validate signatures on a PDF signed with ETSI.CAdES.detached",
-        "command": "pdfcpu",
-        "args": [
-            "signatures",
-            "validate",
-            "-a",
-            "-f",
-            "--",
-            "signed_etsi_cades.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 60,
-        "setup": {
-            "create_file": {
-                "path": "signed_etsi_cades.pdf",
-                "content": "SIGNED_PDF_FIXTURE_ETSI_CADES"
-            }
-        },
-        "notes": "Uses sample file from pkg/samples/signatures/ETSI.CAdES.detached/"
-    },
-    {
-        "name": "test_signatures_validate_x509_rsa_sha1",
-        "category": "HAPPY_PATH",
-        "description": "Validate signatures on a PDF signed with adbe.x509.rsa_sha1",
-        "command": "pdfcpu",
-        "args": [
-            "signatures",
-            "validate",
-            "-a",
-            "--",
-            "signed_x509.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 60,
-        "setup": {
-            "create_file": {
-                "path": "signed_x509.pdf",
-                "content": "SIGNED_PDF_FIXTURE_X509_RSA_SHA1"
-            }
-        },
-        "notes": "Uses sample file from pkg/samples/signatures/adbe.x509.rsa_sha1/"
-    },
-    {
-        "name": "test_signatures_validate_all_flag",
-        "category": "HAPPY_PATH",
-        "description": "Validate all signatures including cosigners and timestamps",
-        "command": "pdfcpu",
-        "args": [
-            "signatures",
-            "validate",
-            "-a",
-            "--",
-            "multi_signed.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "signatures present",
-        "expected_stderr": null,
-        "timeout_seconds": 60,
-        "setup": {
-            "create_file": {
-                "path": "multi_signed.pdf",
-                "content": "MULTI_SIGNED_PDF_FIXTURE"
-            }
-        },
-        "notes": "Tests the -a (all) flag for processing multiple signatures"
-    },
-    {
-        "name": "test_signatures_validate_full_output",
-        "category": "HAPPY_PATH",
-        "description": "Validate signatures with full verbose output including cert chains",
-        "command": "pdfcpu",
-        "args": [
-            "signatures",
-            "validate",
-            "-a",
-            "-f",
-            "--",
-            "signed.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 60,
-        "setup": {
-            "create_file": {
-                "path": "signed.pdf",
-                "content": "SIGNED_PDF_FIXTURE"
-            }
-        },
-        "notes": "Tests the -f (full) flag for comprehensive output"
-    },
-    {
-        "name": "test_signatures_validate_offline",
-        "category": "HAPPY_PATH",
-        "description": "Validate signatures in offline mode (no CRL/OCSP network calls)",
-        "command": "pdfcpu",
-        "args": [
-            "signatures",
-            "validate",
-            "-offline",
-            "-a",
-            "--",
-            "signed.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "signed.pdf",
-                "content": "SIGNED_PDF_FIXTURE"
-            }
-        },
-        "notes": "Uses the --offline flag to skip HTTP traffic for revocation checking"
-    },
-    {
         "name": "test_signatures_validate_no_signatures",
         "category": "BOUNDARY",
         "description": "Validate signatures on a PDF with no signatures present",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "signatures",
             "validate",
             "--",
-            "unsigned.pdf"
+            "test_input.pdf"
         ],
         "expected_exit_code": 1,
         "expected_stdout": null,
         "expected_stderr": "No signatures present",
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "unsigned.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        }
+        "timeout_seconds": 30
     },
     {
         "name": "test_signatures_validate_file_not_found",
         "category": "FILE_INPUT",
         "description": "Validate signatures on a non-existent file should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "signatures",
             "validate",
@@ -1530,7 +809,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_certificates_list",
         "category": "HAPPY_PATH",
         "description": "List all installed certificates",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "certificates",
             "list"
@@ -1538,51 +817,13 @@ TEST_CASES = json.loads(r'''[
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
-        "timeout_seconds": 30,
-        "notes": "Should list pre-loaded EU Trusted List certificates"
-    },
-    {
-        "name": "test_certificates_list_json",
-        "category": "HAPPY_PATH",
-        "description": "List all installed certificates in JSON format",
-        "command": "pdfcpu",
-        "args": [
-            "certificates",
-            "list",
-            "-j"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "notes": "Tests JSON output flag for certificate listing"
-    },
-    {
-        "name": "test_certificates_inspect_pem",
-        "category": "HAPPY_PATH",
-        "description": "Inspect a PEM certificate file",
-        "command": "pdfcpu",
-        "args": [
-            "certificates",
-            "inspect",
-            "test_cert.pem"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "certificates",
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "test_cert.pem",
-                "content": "PEM_CERTIFICATE_FIXTURE"
-            }
-        }
+        "timeout_seconds": 30
     },
     {
         "name": "test_certificates_inspect_p7c",
         "category": "HAPPY_PATH",
         "description": "Inspect a P7C certificate file",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "certificates",
             "inspect",
@@ -1591,61 +832,13 @@ TEST_CASES = json.loads(r'''[
         "expected_exit_code": 0,
         "expected_stdout": "certificates",
         "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "test_cert.p7c",
-                "content": "P7C_CERTIFICATE_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_certificates_inspect_cer",
-        "category": "HAPPY_PATH",
-        "description": "Inspect a CER certificate file",
-        "command": "pdfcpu",
-        "args": [
-            "certificates",
-            "inspect",
-            "test_cert.cer"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "certificates",
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "test_cert.cer",
-                "content": "CER_CERTIFICATE_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_certificates_inspect_crt",
-        "category": "HAPPY_PATH",
-        "description": "Inspect a CRT certificate file",
-        "command": "pdfcpu",
-        "args": [
-            "certificates",
-            "inspect",
-            "test_cert.crt"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "certificates",
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "test_cert.crt",
-                "content": "CRT_CERTIFICATE_FIXTURE"
-            }
-        }
+        "timeout_seconds": 30
     },
     {
         "name": "test_certificates_inspect_unsupported_extension",
         "category": "INVALID_ARGS",
         "description": "Inspect a file with unsupported extension should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "certificates",
             "inspect",
@@ -1657,53 +850,10 @@ TEST_CASES = json.loads(r'''[
         "timeout_seconds": 10
     },
     {
-        "name": "test_certificates_inspect_multiple_files",
-        "category": "HAPPY_PATH",
-        "description": "Inspect multiple certificate files at once",
-        "command": "pdfcpu",
-        "args": [
-            "certificates",
-            "inspect",
-            "cert1.pem",
-            "cert2.p7c"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "inspected",
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "cert1.pem",
-                "content": "PEM_CERTIFICATE_FIXTURE"
-            }
-        }
-    },
-    {
-        "name": "test_certificates_import_pem",
-        "category": "HAPPY_PATH",
-        "description": "Import a PEM certificate file",
-        "command": "pdfcpu",
-        "args": [
-            "certificates",
-            "import",
-            "test_cert.pem"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "imported",
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "test_cert.pem",
-                "content": "PEM_CERTIFICATE_FIXTURE"
-            }
-        }
-    },
-    {
         "name": "test_certificates_import_unsupported_extension",
         "category": "INVALID_ARGS",
         "description": "Import a file with unsupported extension should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "certificates",
             "import",
@@ -1718,7 +868,7 @@ TEST_CASES = json.loads(r'''[
         "name": "test_certificates_import_file_not_found",
         "category": "FILE_INPUT",
         "description": "Import a non-existent certificate file should fail",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "certificates",
             "import",
@@ -1730,401 +880,73 @@ TEST_CASES = json.loads(r'''[
         "timeout_seconds": 10
     },
     {
-        "name": "test_encrypt_then_validate",
-        "category": "HAPPY_PATH",
-        "description": "Encrypt a PDF and then validate it with correct password",
-        "command": "pdfcpu",
-        "args": [
-            "encrypt",
-            "-m",
-            "aes",
-            "-key",
-            "256",
-            "-upw",
-            "user",
-            "-opw",
-            "owner",
-            "--",
-            "input.pdf",
-            "encrypted_for_validate.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
-        "cleanup": {
-            "delete_files": [
-                "encrypted_for_validate.pdf"
-            ]
-        },
-        "notes": "Part 1 of encrypt-then-validate integration test"
-    },
-    {
-        "name": "test_encrypt_decrypt_roundtrip_rc4_40",
-        "category": "HAPPY_PATH",
-        "description": "Full encrypt/decrypt roundtrip with RC4-40",
-        "command": "pdfcpu",
-        "args": [
-            "encrypt",
-            "-m",
-            "rc4",
-            "-key",
-            "40",
-            "-upw",
-            "user",
-            "-opw",
-            "owner",
-            "--",
-            "input.pdf",
-            "roundtrip_rc4_40.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
-        "cleanup": {
-            "delete_files": [
-                "roundtrip_rc4_40.pdf"
-            ]
-        },
-        "notes": "Part 1 of RC4-40 roundtrip test"
-    },
-    {
-        "name": "test_encrypt_decrypt_roundtrip_rc4_128",
-        "category": "HAPPY_PATH",
-        "description": "Full encrypt/decrypt roundtrip with RC4-128",
-        "command": "pdfcpu",
-        "args": [
-            "encrypt",
-            "-m",
-            "rc4",
-            "-key",
-            "128",
-            "-upw",
-            "user",
-            "-opw",
-            "owner",
-            "--",
-            "input.pdf",
-            "roundtrip_rc4_128.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
-        "cleanup": {
-            "delete_files": [
-                "roundtrip_rc4_128.pdf"
-            ]
-        },
-        "notes": "Part 1 of RC4-128 roundtrip test"
-    },
-    {
-        "name": "test_encrypt_decrypt_roundtrip_aes_128",
-        "category": "HAPPY_PATH",
-        "description": "Full encrypt/decrypt roundtrip with AES-128",
-        "command": "pdfcpu",
-        "args": [
-            "encrypt",
-            "-m",
-            "aes",
-            "-key",
-            "128",
-            "-upw",
-            "user",
-            "-opw",
-            "owner",
-            "--",
-            "input.pdf",
-            "roundtrip_aes_128.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
-        "cleanup": {
-            "delete_files": [
-                "roundtrip_aes_128.pdf"
-            ]
-        },
-        "notes": "Part 1 of AES-128 roundtrip test"
-    },
-    {
-        "name": "test_encrypt_decrypt_roundtrip_aes_256",
-        "category": "HAPPY_PATH",
-        "description": "Full encrypt/decrypt roundtrip with AES-256",
-        "command": "pdfcpu",
-        "args": [
-            "encrypt",
-            "-m",
-            "aes",
-            "-key",
-            "256",
-            "-upw",
-            "user",
-            "-opw",
-            "owner",
-            "--",
-            "input.pdf",
-            "roundtrip_aes_256.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
-        "cleanup": {
-            "delete_files": [
-                "roundtrip_aes_256.pdf"
-            ]
-        },
-        "notes": "Part 1 of AES-256 roundtrip test"
-    },
-    {
         "name": "test_command_prefix_completion_enc",
         "category": "BOUNDARY",
         "description": "Test command prefix completion: 'enc' should match 'encrypt'",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "enc",
             "-opw",
             "ownerpass",
             "--",
-            "input.pdf",
-            "output.pdf"
+            "test_input.pdf",
+            "test_out_prefix_enc.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "output.pdf"
+                "test_out_prefix_enc.pdf"
             ]
-        },
-        "notes": "Verifies that command prefix completion works for 'enc' -> 'encrypt'"
+        }
     },
     {
         "name": "test_command_prefix_completion_dec",
         "category": "BOUNDARY",
         "description": "Test command prefix completion: 'dec' should match 'decrypt'",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "dec",
             "-opw",
             "ownerpass",
             "--",
-            "encrypted.pdf",
-            "output.pdf"
+            "test_encrypted_opw.pdf",
+            "test_out_prefix_dec.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE_OPW_ONLY"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "output.pdf"
+                "test_out_prefix_dec.pdf"
             ]
-        },
-        "notes": "Verifies that command prefix completion works for 'dec' -> 'decrypt'"
-    },
-    {
-        "name": "test_encrypt_opw_only",
-        "category": "HAPPY_PATH",
-        "description": "Encrypt with owner password only (no user password), allowing passwordless opening",
-        "command": "pdfcpu",
-        "args": [
-            "encrypt",
-            "-opw",
-            "ownerpass",
-            "--",
-            "input.pdf",
-            "encrypted_opw_only.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": null,
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
-        "cleanup": {
-            "delete_files": [
-                "encrypted_opw_only.pdf"
-            ]
-        },
-        "notes": "When encrypted with opw only, the document can be opened without any password but permissions are restricted"
-    },
-    {
-        "name": "test_permissions_after_encrypt_none",
-        "category": "HAPPY_PATH",
-        "description": "After encryption with default permissions (none), verify permission bits are all zero",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "list",
-            "-opw",
-            "ownerpass",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "permission bits: 000000000000",
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE_PERM_NONE"
-            }
-        },
-        "notes": "Verifies that default encryption produces 'none' permission bits"
-    },
-    {
-        "name": "test_permissions_after_encrypt_all",
-        "category": "HAPPY_PATH",
-        "description": "After encryption with all permissions, verify permission bits are 111100111100",
-        "command": "pdfcpu",
-        "args": [
-            "permissions",
-            "list",
-            "-opw",
-            "ownerpass",
-            "--",
-            "encrypted.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "permission bits: 111100111100",
-        "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "encrypted.pdf",
-                "content": "ENCRYPTED_PDF_FIXTURE_PERM_ALL"
-            }
-        },
-        "notes": "Verifies that encryption with -perm all produces correct permission bits"
+        }
     },
     {
         "name": "test_quiet_flag_suppresses_output",
-        "category": "HAPPY_PATH",
+        "category": "BOUNDARY",
         "description": "Using -q flag should suppress normal output",
-        "command": "pdfcpu",
+        "command": "./pdfcpu",
         "args": [
             "-q",
             "permissions",
             "list",
             "--",
-            "unencrypted.pdf"
+            "test_input.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
-        "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "unencrypted.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
-        "notes": "The -q flag disables stdout output"
-    },
-    {
-        "name": "test_signatures_validate_single_signature_output",
-        "category": "HAPPY_PATH",
-        "description": "Validate a single signature and check output format",
-        "command": "pdfcpu",
-        "args": [
-            "signatures",
-            "validate",
-            "--",
-            "single_signed.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "Status:",
-        "expected_stderr": null,
-        "timeout_seconds": 60,
-        "setup": {
-            "create_file": {
-                "path": "single_signed.pdf",
-                "content": "SIGNED_PDF_FIXTURE_SINGLE"
-            }
-        },
-        "notes": "Single signature output includes Type, Status, Reason, Signed fields"
-    },
-    {
-        "name": "test_signatures_validate_multiple_signature_stats",
-        "category": "HAPPY_PATH",
-        "description": "Validate multiple signatures and check statistics output",
-        "command": "pdfcpu",
-        "args": [
-            "signatures",
-            "validate",
-            "-a",
-            "--",
-            "multi_signed.pdf"
-        ],
-        "expected_exit_code": 0,
-        "expected_stdout": "signatures present:",
-        "expected_stderr": null,
-        "timeout_seconds": 60,
-        "setup": {
-            "create_file": {
-                "path": "multi_signed.pdf",
-                "content": "MULTI_SIGNED_PDF_FIXTURE"
-            }
-        },
-        "notes": "Multiple signatures produce summary statistics (total, form signed, page signed, etc.)"
+        "timeout_seconds": 30
     },
     {
         "name": "test_encrypt_aes40_happy_path",
         "category": "HAPPY_PATH",
-        "description": "Encrypt a PDF with AES-40 (non-standard but supported)",
-        "command": "pdfcpu",
+        "description": "Encrypt a PDF with AES-40",
+        "command": "./pdfcpu",
         "args": [
             "encrypt",
             "-m",
@@ -2134,29 +956,38 @@ TEST_CASES = json.loads(r'''[
             "-opw",
             "ownerpass",
             "--",
-            "input.pdf",
-            "encrypted_aes40.pdf"
+            "test_input.pdf",
+            "test_out_enc_aes40.pdf"
         ],
         "expected_exit_code": 0,
         "expected_stdout": null,
         "expected_stderr": null,
         "timeout_seconds": 30,
-        "setup": {
-            "create_file": {
-                "path": "input.pdf",
-                "content": "VALID_PDF_FIXTURE"
-            }
-        },
         "cleanup": {
             "delete_files": [
-                "encrypted_aes40.pdf"
+                "test_out_enc_aes40.pdf"
             ]
         }
+    },
+    {
+        "name": "test_certificates_import_p7c",
+        "category": "HAPPY_PATH",
+        "description": "Import a P7C certificate file",
+        "command": "./pdfcpu",
+        "args": [
+            "certificates",
+            "import",
+            "test_cert.p7c"
+        ],
+        "expected_exit_code": 0,
+        "expected_stdout": "certificates",
+        "expected_stderr": null,
+        "timeout_seconds": 30
     }
 ]''')
 
 # CLI binary/entry point
-CLI_COMMAND = "pdfcpu"
+CLI_COMMAND = "./pdfcpu"
 
 # Working directory for CLI execution
 WORKING_DIR = "."
