@@ -9,7 +9,7 @@ This script supports two modes:
 1. SRC Validation: Tests commands and captures outputs (no expected_stdout/stderr)
 2. DST Contract Validation: Tests commands and validates outputs match expected
 
-Generated at: 2026-02-24T20:34:47.515715+00:00
+Generated at: 2026-02-24T20:58:53.311802+00:00
 Project: pdf
 Milestone: 3
 """
@@ -789,9 +789,9 @@ TEST_CASES = json.loads(r'''[
         "description": "Using -q flag should suppress normal output on permissions list",
         "command": "./pdfcpu",
         "args": [
-            "-q",
             "permissions",
             "list",
+            "-q",
             "--",
             "pkg/testdata/go.pdf"
         ],
